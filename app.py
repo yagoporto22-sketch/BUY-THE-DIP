@@ -99,15 +99,21 @@ if st.sidebar.button("🚀 Ejecutar Análisis"):
         df_visual.index = df_visual.index + 1
 
         # FUNCIÓN ÚNICA: ROJO (< -20), VERDE (> 20) Y DORADO (> 50)
-        def style_rentabilidad(val):
+     def style_rentabilidad(val):
             try:
                 v = float(val)
+                # 🔴 ROJO: Fondo rosa, letra granate
                 if v < -20:
-                    return 'background-color: #efb810; color: #ffcccc' # Rojo Pastel
+                    return 'background-color: #ffcccc; color: #990000' 
+                
+                # 🟡 DORADO: Fondo oro, letra negra en negrita (para que resalte)
                 elif v > 50:
-                    return 'background-color: #efb810; color: #FFD700'
+                    return 'background-color: #FFD700; color: #efb810'
+                
+                # 🟢 VERDE: Fondo verde claro, letra verde oscuro
                 elif v > 20:
-                    return 'background-color: #c6efce; color: #006100' # Verde Pastel
+                    return 'background-color: #c6efce; color: #006100'
+                
                 return ''
             except:
                 return ''
