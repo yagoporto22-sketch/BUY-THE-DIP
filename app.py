@@ -126,52 +126,7 @@ if st.sidebar.button("🚀 Ejecutar Análisis"):
         with col2: 
             st.table(df_res[cols_actuales].mean().to_frame(name="Media %"))
 
-        # --- 6. BALANCE DE ESTRATEGIA (WIN RATE) ---
-        st.subheader("🏆 Probabilidad de Éxito (Win Rate)")
-        stats = []
-
-        for col in cols_interes:
-            if col in df_res.columns:
-                datos_validos = df_res[col].dropna()
-                total = len(datos_validos)
-                if total > 0:
-                    ganadas = (datos_validos > 0).sum()
-                    perdidas = (datos_validos <= 0).sum()
-                    win_rate = (ganadas / total) * 100
-                    stats.append({
-                        'Plazo': col,
-                        'Total Ops': total,
-                        'Ganadas ✅': int(ganadas),
-                        'Perdidas ❌': int(perdidas),
-                        'Win Rate (%)': f"{round(win_rate, 2)}%"
-                    })
-
-        if stats:
-            st.dataframe(pd.DataFrame(stats), use_container_width=True, hide_index=True)
-
-        # --- 6. BALANCE DE ESTRATEGIA (WIN RATE) ---
-        st.subheader("🏆 Probabilidad de Éxito (Win Rate)")
-        stats = []
-
-        for col in cols_interes:
-            if col in df_res.columns:
-                datos_validos = df_res[col].dropna()
-                total = len(datos_validos)
-                if total > 0:
-                    ganadas = (datos_validos > 0).sum()
-                    perdidas = (datos_validos <= 0).sum()
-                    win_rate = (ganadas / total) * 100
-                    stats.append({
-                        'Plazo': col,
-                        'Total Ops': total,
-                        'Ganadas ✅': int(ganadas),
-                        'Perdidas ❌': int(perdidas),
-                        'Win Rate (%)': f"{round(win_rate, 2)}%"
-                    })
-
-        if stats:
-            st.dataframe(pd.DataFrame(stats), use_container_width=True, hide_index=True)
-
+ 
         # --- 6. BALANCE DE ESTRATEGIA (WIN RATE) ---
         st.subheader("🏆 Probabilidad de Éxito (Win Rate)")
         stats = []
