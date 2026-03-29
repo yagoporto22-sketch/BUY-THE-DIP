@@ -96,8 +96,7 @@ with col2:
     # La tabla de medias no tiene índice numérico (usa los plazos), 
     # así que esta se queda igual de bien.
     st.table(df_res[['1M', '3M', '6M', '12M', '24M']].mean().to_frame(name="Media %"))
-        with col1: st.dataframe(df_res)
-        with col2: st.table(df_res[['1M', '3M', '6M', '12M', '24M']].mean().to_frame(name="Media %"))
+     
         # --- 6. BALANCE DE ESTRATEGIA (GANADAS VS PERDIDAS) ---
 st.subheader("🏆 Probabilidad de Éxito (Win Rate)")
 stats = []
