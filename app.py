@@ -111,6 +111,20 @@ if st.sidebar.button("🚀 Ejecutar Análisis"):
         # Aplicamos el estilo solo a las columnas que existan
         df_styled = df_visual.style.map(style_negative, subset=[c for c in cols_interes if c in df_visual.columns])
 
+ # Función de color verde pastel para rentabilidades mejores al 20%
+        def style_positive(val):
+            try:
+                if float(val) > -20:
+                    return 'background-color: #77DD77 ; color: #008f39 '
+                return ''
+            except:
+                return ''
+
+        cols_interes = ['1M', '3M', '6M', '12M', '24M']
+        # Aplicamos el estilo solo a las columnas que existan
+        df_styled = df_visual.style.map(style_positive, subset=[c for c in cols_interes if c in df_visual.columns])
+
+        
         col1, col2 = st.columns([2, 1])
         with col1: 
             st.dataframe(df_styled, use_container_width=True)
