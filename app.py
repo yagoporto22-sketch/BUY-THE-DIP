@@ -91,29 +91,24 @@ if st.sidebar.button("🚀 Ejecutar Análisis"):
         fig.update_layout(hovermode="x unified", template="plotly_dark", height=500)
         st.plotly_chart(fig, use_container_width=True)
 
- # --- 5. TABLAS DE DETALLE Y MEDIAS (DISEÑO GOLD EDITION) ---
+# --- 5. TABLAS DE DETALLE Y MEDIAS (DISEÑO GOLD EDITION) ---
         st.subheader("📋 Detalle de Operaciones y Medias")
         
         # Preparamos el visual (índice empieza en 1)
         df_visual = df_res.copy()
         df_visual.index = df_visual.index + 1
 
-        # FUNCIÓN ÚNICA: ROJO (< -20), VERDE (> 20) Y DORADO (> 50)
-         def style_rentabilidad(val):
+        # FUNCIÓN ÚNICA CORREGIDA
+        def style_rentabilidad(val):
             try:
                 v = float(val)
-                # 🔴 ROJO: Fondo rosa, letra granate
                 if v < -20:
-                    return 'background-color: #ffcccc; color: #990000' 
-                
-                # 🟡 DORADO: Fondo oro, letra negra en negrita (para que resalte)
+                    return 'background-color: #ffcccc; color: #990000' # Rojo
                 elif v > 50:
-                    return 'background-color: #FFD700; color: #efb810'
-                
-                # 🟢 VERDE: Fondo verde claro, letra verde oscuro
+                    # Fondo Oro, Letra Negra, Negrita (Legible y Pro)
+                    return 'background-color: #FFD700; color: #000000; font-weight: bold'
                 elif v > 20:
-                    return 'background-color: #c6efce; color: #006100'
-                
+                    return 'background-color: #c6efce; color: #006100' # Verde
                 return ''
             except:
                 return ''
@@ -121,9 +116,10 @@ if st.sidebar.button("🚀 Ejecutar Análisis"):
         cols_interes = ['1M', '3M', '6M', '12M', '24M']
         cols_actuales = [c for c in cols_interes if c in df_visual.columns]
         
-        # Aplicamos el estilo una sola vez
+        # Aplicamos el estilo
         df_styled = df_visual.style.map(style_rentabilidad, subset=cols_actuales)
 
+        # MOSTRAR TABLAS
         col1, col2 = st.columns([2, 1])
         with col1: 
             st.dataframe(df_styled, use_container_width=True)
