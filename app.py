@@ -79,37 +79,52 @@ if st.sidebar.button("🚀 Ejecutar Análisis"):
         fig.update_layout(hovermode="x unified", template="plotly_dark", height=500)
         st.plotly_chart(fig, use_container_width=True)
 
-        # 5. TABLAS (Tus tablas de siempre)
+       # --- 5. TABLAS DE DETALLE Y MEDIAS (DISEÑO MEJORADO) ---
         st.subheader("📋 Detalle de Operaciones y Medias")
-        col1, col2 = st.columns([2, 1])
-        with col1: st.dataframe(df_res)
-        with col2: st.table(df_res[['1M', '3M', '6M', '12M', '24M']].mean().to_frame(name="Media %"))     
-        # --- 6. BALANCE DE ESTRATEGIA (GANADAS VS PERDIDAS) ---
-st.subheader("🏆 Probabilidad de Éxito (Win Rate)")
-stats = []
-
-# Analizamos cada columna de plazo
-for col in ['1M', '3M', '6M', '12M', '24M']:
-    # Solo contamos las que tienen datos (filtramos los N/A)
-    datos_validos = df_res[col].dropna()
-    total = len(datos_validos)
-    
-    if total > 0:
-        ganadas = (datos_validos > 0).sum()
-        perdidas = (datos_validos <= 0).sum()
-        win_rate = (ganadas / total) * 100
         
-        stats.append({
-            'Plazo': col,
-            'Total Ops': total,
-            'Ganadas ✅': int(ganadas),
-            'Perdidas ❌': int(perdidas),
-            'Win Rate (%)': f"{round(win_rate, 2)}%"
-        })
+        # Preparamos el visual (índice empieza en 1)
+        df_visual = df_res.copy()
+        df_visual.index = df_visual.index + 1
 
-if stats:
-    df_stats = pd.DataFrame(stats)
-    # Mostramos la tabla centrada y ocupando el ancho
-    st.dataframe(df_stats, use_container_width=True, hide_index=True)
-else:
-    st.info("No hay suficientes datos históricos para calcular el balance.")
+        # Función de color rojo pastel para rentabilidades peores al -20%
+        def style_negative(val):
+            try:
+                if float(val) < -20:
+                    return 'background-color: #ffcccc; color: #990000'
+                return ''
+            except:
+                return ''
+
+        cols_interes = ['1M', '3M', '6M', '12M', '24M']
+        # Aplicamos el estilo solo a las columnas que existan
+        df_styled = df_visual.style.map(style_negative, subset=[c for c in cols_interes if c in df_visual.columns])
+
+        col1, col2 = st.columns([2, 1])
+        with col1: 
+            st.dataframe(df_styled, use_container_width=True)
+        with col2: 
+            st.table(df_res[[c for c in cols_interes if c in df_res.columns]].mean().to_frame(name="Media %"))
+
+        # --- 6. BALANCE DE ESTRATEGIA (WIN RATE) ---
+        st.subheader("🏆 Probabilidad de Éxito (Win Rate)")
+        stats = []
+
+        for col in cols_interes:
+            if col in df_res.columns:
+                datos_validos = df_res[col].dropna()
+                total = len(datos_validos)
+                if total > 0:
+                    ganadas = (datos_validos > 0).sum()
+                    perdidas = (datos_validos <= 0).sum()
+                    win_rate = (ganadas / total) * 100
+                    stats.append({
+                        'Plazo': col,
+                        'Total Ops': total,
+                        'Ganadas ✅': int(ganadas),
+                        'Perdidas ❌': int(perdidas),
+                        'Win Rate (%)': f"{round(win_rate, 2)}%"
+                    })
+
+        if stats:
+            st.dataframe(pd.DataFrame(stats), use_container_width=True, hide_index=True)
+    
