@@ -105,7 +105,7 @@ if st.sidebar.button("🚀 Ejecutar Análisis"):
                 if v < -20:
                     return 'background-color: #efb810; color: #ffcccc' # Rojo Pastel
                 elif v > 50:
-                    return 'background-color: #efb810; color: #FFD700; 
+                    return 'background-color: #efb810; color: #ffd700; 
                 elif v > 20:
                     return 'background-color: #c6efce; color: #006100' # Verde Pastel
                 return ''
