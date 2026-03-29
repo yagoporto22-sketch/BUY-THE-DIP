@@ -48,15 +48,27 @@ if st.sidebar.button("🚀 Ejecutar Análisis"):
             # [Para ahorrar espacio asumo que mantienes tu bloque de procesamiento aquí]
             # [Asegúrate de que la lista 'resultados' se llene como en tu código anterior]
             
-            # --- (Inserta aquí tu bucle de resultados que ya tenías) ---
-            siguiente_limite = señales_indices[k+1] if k+1 < len(señales_indices) else len(precios)
-            periodo_posterior = precios[idx:siguiente_limite]
+           # --- NUEVA LÓGICA DE MAX DRAWDOWN 
+            fin_ventana_dd = min(idx + 1008, len(precios))
+            periodo_posterior = precios[idx:fin_ventana_dd]
+            
             max_dd = ((np.min(periodo_posterior) - precios[idx]) / precios[idx]) * 100
-            fila = {'Fecha': fechas[idx].date(), 'Precio': round(float(precios[idx]), 2), 'Max DD %': round(float(max_dd), 2)}
+            
+            # Creamos la fila con los datos básicos
+            fila = {
+                'Fecha': fechas[idx].date(), 
+                'Precio': round(float(precios[idx]), 2), 
+                'Max DD %': round(float(max_dd), 2)
+            }
+            
+            # Calculamos las rentabilidades a plazos fijos
             for n, d in [('1M', 21), ('3M', 63), ('6M', 126), ('12M', 252), ('24M', 504)]:
                 if idx + d < len(df):
                     rent = ((df.iloc[idx + d]['Price'] - precios[idx]) / precios[idx]) * 100
                     fila[n] = round(float(rent), 2)
+                else:
+                    fila[n] = None # Si no ha pasado suficiente tiempo, ponemos vacío
+            
             resultados.append(fila)
 
         df_res = pd.DataFrame(resultados)
