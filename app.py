@@ -106,7 +106,7 @@ if st.sidebar.button("🚀 Ejecutar Análisis"):
                     return 'background-color: #ffcccc; color: #990000' # Rojo
                 elif v > 50:
                     # Fondo Oro, Letra Negra, Negrita (Legible y Pro)
-                    return 'background-color: #FFD700; color: #c8b273'
+                    return 'background-color: #FFD700; color: #000000'
                 elif v > 20:
                     return 'background-color: #c6efce; color: #006100' # Verde
                 return ''
