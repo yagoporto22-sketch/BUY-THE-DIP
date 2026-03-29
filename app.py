@@ -99,7 +99,7 @@ if st.sidebar.button("🚀 Ejecutar Análisis"):
         df_visual.index = df_visual.index + 1
 
         # FUNCIÓN ÚNICA: ROJO (< -20), VERDE (> 20) Y DORADO (> 50)
-     def style_rentabilidad(val):
+         def style_rentabilidad(val):
             try:
                 v = float(val)
                 # 🔴 ROJO: Fondo rosa, letra granate
