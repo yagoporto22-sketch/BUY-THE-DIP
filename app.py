@@ -114,7 +114,7 @@ if st.sidebar.button("🚀 Ejecutar Análisis"):
  # Función de color verde pastel para rentabilidades mejores al 20%
         def style_positive(val):
             try:
-                if float(val) > -20:
+                if float(val) > 20:
                     return 'background-color: #77DD77 ; color: #008f39 '
                 return ''
             except:
