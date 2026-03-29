@@ -82,21 +82,8 @@ if st.sidebar.button("🚀 Ejecutar Análisis"):
         # 5. TABLAS (Tus tablas de siempre)
         st.subheader("📋 Detalle de Operaciones y Medias")
         col1, col2 = st.columns([2, 1])
-        with col1: 
-    # CREAMOS UNA COPIA PARA NO ROMPER EL ORIGINAL
-    df_visual = df_res.copy()
-    
-    # CAMBIAMOS EL ÍNDICE: LE SUMAMOS 1 A CADA NÚMERO
-    df_visual.index = df_visual.index + 1
-    
-    # MOSTRAMOS LA TABLA YA MODIFICADA
-    st.dataframe(df_visual, use_container_width=True)
-
-with col2: 
-    # La tabla de medias no tiene índice numérico (usa los plazos), 
-    # así que esta se queda igual de bien.
-    st.table(df_res[['1M', '3M', '6M', '12M', '24M']].mean().to_frame(name="Media %"))
-     
+        with col1: st.dataframe(df_res)
+        with col2: st.table(df_res[['1M', '3M', '6M', '12M', '24M']].mean().to_frame(name="Media %"))     
         # --- 6. BALANCE DE ESTRATEGIA (GANADAS VS PERDIDAS) ---
 st.subheader("🏆 Probabilidad de Éxito (Win Rate)")
 stats = []
